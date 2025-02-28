@@ -45,6 +45,8 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Set `gradlew` permissions
+        run: chmod +x ./android/gradlew
       - name: Build Android APK
         run: ./android/gradlew assembleDebug
       - name: Upload built APK to GH Artifacts
