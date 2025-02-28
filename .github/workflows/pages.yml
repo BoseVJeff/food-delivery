@@ -45,6 +45,10 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Setup JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 21
       - name: Set `gradlew` permissions
         run: chmod +x ./android/gradlew
       - name: Build Android APK
