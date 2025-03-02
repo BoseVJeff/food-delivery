@@ -20,74 +20,64 @@ import '@ionic/react/css/palettes/dark.class.css';
 
 import './theme/variables.css';
 
-import { IonHeader, IonToolbar, IonTitle, IonContent, setupIonicReact, IonFooter, IonApp, IonButton } from '@ionic/react';
-import { useContext, useRef, useState } from 'react';
-import ThemeContext from './utils/ThemeContext';
-import LogContext from './utils/LogContext';
+import { IonHeader, IonToolbar, IonTitle, IonContent, setupIonicReact, IonFooter, IonApp, IonRouterOutlet, IonMenu, IonButtons, IonMenuButton, IonList, IonItem, IonListHeader } from '@ionic/react';
+import Home from './pages/Home';
+import { IonReactRouter } from '@ionic/react-router';
+import { Redirect, Route } from 'react-router-dom';
+import Settings from './pages/Settings';
+import Example from './pages/Example';
+import Default from './pages/Default';
 
 setupIonicReact();
 
 function App() {
-  // const theme = useContext(ThemeContext);
-
-  let [theme, setTheme] = useState<boolean | null>(null);
-
-  const root = useRef(document.documentElement);
-
-  const logger = useContext(LogContext);
-
-  function switchTheme() {
-    setTheme(theme === null ? true : !theme);
-    if (!theme) {
-      root.current.classList.add("ion-palette-dark");
-    } else {
-      root.current.classList.remove("ion-palette-dark");
-    }
-    logger(`Current theme: ${theme}`);
-  }
-
-  function logMsg() {
-    logger("Logged message!");
-  }
-
   return (
-    <ThemeContext.Provider value={theme}>
-      <IonApp>
-        <IonHeader>
-          <IonToolbar>
-            <IonTitle>Header</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent className="ion-padding">
-          <h1>Heading 1</h1>
-          <h2>Heading 2</h2>
-          <h3>Heading 3</h3>
-          <h4>Heading 4</h4>
-          <h5>Heading 5</h5>
-          <h6>Heading 6</h6>
-
-          <p>Here's a small text description for the content. Nothing more, nothing less.</p>
-
-          <p>
-            <IonButton onClick={switchTheme}>
-              {/* Default should be light, hence the structure */}
-              Enable {!theme ? "Dark" : "Light"} Mode
-            </IonButton>
-          </p>
-
-          <p>
-            <IonButton onClick={logMsg}>
-              Log message to browser console
-            </IonButton>
-          </p>
-        </IonContent>
-        <IonFooter>
-          <IonToolbar>
-            <IonTitle>Footer</IonTitle>
-          </IonToolbar>
-        </IonFooter>
-      </IonApp>
-    </ThemeContext.Provider>
+    <>
+      <IonReactRouter>
+        <IonMenu contentId='fd-app'>
+          <IonList>
+            <IonListHeader>
+              Food Delivery
+            </IonListHeader>
+            <IonItem routerLink='/'>
+              Home
+            </IonItem>
+            <IonItem routerLink='/settings'>
+              Settings
+            </IonItem>
+            <IonItem routerLink='/example'>
+              Example
+            </IonItem>
+          </IonList>
+        </IonMenu>
+        <IonApp>
+          <IonHeader>
+            <IonToolbar>
+              <IonTitle>Header</IonTitle>
+              <IonButtons slot="start">
+                <IonMenuButton></IonMenuButton>
+              </IonButtons>
+            </IonToolbar>
+          </IonHeader>
+          <IonContent class='ion-padding' id='fd-app'>
+            <IonRouterOutlet>
+              <Route exact path="/" component={Home}></Route>
+              <Route exact path="/home">
+                <Redirect to="/"></Redirect>
+              </Route>
+              <Route path="/settings" component={Settings}></Route>
+              <Route path="/example" component={Example}></Route>
+              <Route component={Default}></Route>
+            </IonRouterOutlet>
+          </IonContent>
+          <IonFooter>
+            <IonToolbar>
+              <IonTitle>Footer</IonTitle>
+            </IonToolbar>
+          </IonFooter>
+        </IonApp>
+      </IonReactRouter>
+    </>
   );
 }
 
