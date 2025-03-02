@@ -31,9 +31,18 @@ import Default from './pages/Default';
 setupIonicReact();
 
 function App() {
+  let base_url = import.meta.env.BASE_URL;
+  let current_url = document.URL;
+  let url = new URL(base_url, current_url);
+
+  let basename = "/";
+  if (url.hostname.endsWith(".github.io")) {
+    basename = url.pathname;
+  }
+
   return (
     <>
-      <IonReactRouter>
+      <IonReactRouter basename={basename}>
         <IonMenu contentId='fd-app'>
           <IonList>
             <IonListHeader>
