@@ -1,3 +1,5 @@
+// "use strict";
+
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
 
@@ -19,63 +21,73 @@ import '@ionic/react/css/palettes/dark.class.css';
 import './theme/variables.css';
 
 import { IonHeader, IonToolbar, IonTitle, IonContent, setupIonicReact, IonFooter, IonApp, IonButton } from '@ionic/react';
-import { createContext, useContext, useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
+import ThemeContext from './utils/ThemeContext';
+import LogContext from './utils/LogContext';
 
 setupIonicReact();
 
-function logger(msg: string): void {
-  console.log(msg);
-}
-
-const FuncContext = createContext<(msg: string) => void>(logger);
-
 function App() {
+  // const theme = useContext(ThemeContext);
 
-  let htmlRef = useRef(document.documentElement);
-  let [isDarkMode, setIsDarkMode] = useState<boolean | null>(null);
+  let [theme, setTheme] = useState<boolean | null>(null);
 
-  function toggleDarkMode() {
-    htmlRef.current.classList.toggle('ion-palette-dark');
-    setIsDarkMode(htmlRef.current.classList.contains('ion-palette-dark'));
+  const root = useRef(document.documentElement);
+
+  const logger = useContext(LogContext);
+
+  function switchTheme() {
+    setTheme(theme === null ? true : !theme);
+    if (!theme) {
+      root.current.classList.add("ion-palette-dark");
+    } else {
+      root.current.classList.remove("ion-palette-dark");
+    }
+    logger(`Current theme: ${theme}`);
   }
 
-  const propLogger = useContext(FuncContext);
+  function logMsg() {
+    logger("Logged message!");
+  }
 
   return (
-    <IonApp>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Header</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent className="ion-padding">
-        <h1>Heading 1</h1>
-        <h2>Heading 2</h2>
-        <h3>Heading 3</h3>
-        <h4>Heading 4</h4>
-        <h5>Heading 5</h5>
-        <h6>Heading 6</h6>
+    <ThemeContext.Provider value={theme}>
+      <IonApp>
+        <IonHeader>
+          <IonToolbar>
+            <IonTitle>Header</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent className="ion-padding">
+          <h1>Heading 1</h1>
+          <h2>Heading 2</h2>
+          <h3>Heading 3</h3>
+          <h4>Heading 4</h4>
+          <h5>Heading 5</h5>
+          <h6>Heading 6</h6>
 
-        <p>Here's a small text description for the content. Nothing more, nothing less.</p>
+          <p>Here's a small text description for the content. Nothing more, nothing less.</p>
 
-        <p>
-          <IonButton onClick={toggleDarkMode}>
-            Enable {isDarkMode ? "Light" : "Dark"} Mode
-          </IonButton>
-        </p>
+          <p>
+            <IonButton onClick={switchTheme}>
+              {/* Default should be light, hence the structure */}
+              Enable {!theme ? "Dark" : "Light"} Mode
+            </IonButton>
+          </p>
 
-        <p>
-          <IonButton onClick={() => { propLogger("Logged click!") }}>
-            Log message to browser console
-          </IonButton>
-        </p>
-      </IonContent>
-      <IonFooter>
-        <IonToolbar>
-          <IonTitle>Footer</IonTitle>
-        </IonToolbar>
-      </IonFooter>
-    </IonApp>
+          <p>
+            <IonButton onClick={logMsg}>
+              Log message to browser console
+            </IonButton>
+          </p>
+        </IonContent>
+        <IonFooter>
+          <IonToolbar>
+            <IonTitle>Footer</IonTitle>
+          </IonToolbar>
+        </IonFooter>
+      </IonApp>
+    </ThemeContext.Provider>
   );
 }
 
