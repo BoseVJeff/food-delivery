@@ -22,7 +22,10 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
+  deploy-pages:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -31,13 +34,6 @@ jobs:
         run: npm ci
       - name: Build app
         run: npm run build
-  deploy:
-    needs: build
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
@@ -48,10 +44,15 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-  android:
-    needs: build
+  deploy-app:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Download dependencies
+        run: npm ci
+      - name: Build app
+        run: npm run build
       - name: Setup JDK
         uses: actions/setup-java@v1
         with:
