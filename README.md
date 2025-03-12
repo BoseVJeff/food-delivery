@@ -1,5 +1,5 @@
-[![Deploy web build to Pages](https://github.com/BoseVJeff/food-delivery/actions/workflows/pages.yml/badge.svg)](https://github.com/BoseVJeff/food-delivery/actions/workflows/pages.yml)
-[![Deploy web build to Pages](https://github.com/BoseVJeff/food-delivery/actions/workflows/pages.yml/badge.svg)](https://github.com/BoseVJeff/food-delivery/actions/workflows/pages.yml)
+[![Web Build (GH Pages) (Nightly)](https://github.com/BoseVJeff/food-delivery/actions/workflows/pages.yml/badge.svg)](https://github.com/BoseVJeff/food-delivery/actions/workflows/pages.yml)
+[![Android App (Nightly)](https://github.com/BoseVJeff/food-delivery/actions/workflows/app.yml/badge.svg)](https://github.com/BoseVJeff/food-delivery/actions/workflows/app.yml)
 
 # React + TypeScript + Vite
 
