@@ -1,3 +1,6 @@
+[![Deploy web build to Pages](https://github.com/BoseVJeff/food-delivery/actions/workflows/pages.yml/badge.svg)](https://github.com/BoseVJeff/food-delivery/actions/workflows/pages.yml)
+[![Deploy web build to Pages](https://github.com/BoseVJeff/food-delivery/actions/workflows/pages.yml/badge.svg)](https://github.com/BoseVJeff/food-delivery/actions/workflows/pages.yml)
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
