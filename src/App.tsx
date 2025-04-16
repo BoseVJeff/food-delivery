@@ -27,6 +27,8 @@ import { Redirect, Route } from 'react-router-dom';
 import Settings from './pages/Settings';
 import Example from './pages/Example';
 import Default from './pages/Default';
+import { useContext, useState } from 'react';
+import SetPageTitleContext from './utils/PageTitleContext';
 
 setupIonicReact();
 
@@ -39,6 +41,8 @@ function App() {
   if (url.hostname.endsWith(".github.io")) {
     basename = url.pathname;
   }
+
+  const [pageTitle, setPageTitle] = useState<string>("");
 
   return (
     <>
@@ -62,22 +66,24 @@ function App() {
         <IonApp>
           <IonHeader>
             <IonToolbar>
-              <IonTitle>Header</IonTitle>
+              <IonTitle>{pageTitle}</IonTitle>
               <IonButtons slot="start">
                 <IonMenuButton></IonMenuButton>
               </IonButtons>
             </IonToolbar>
           </IonHeader>
           <IonContent class='ion-padding' id='fd-app'>
-            <IonRouterOutlet>
-              <Route exact path="/" component={Home}></Route>
-              <Route exact path="/home">
-                <Redirect to="/"></Redirect>
-              </Route>
-              <Route path="/settings" component={Settings}></Route>
-              <Route path="/example" component={Example}></Route>
-              <Route component={Default}></Route>
-            </IonRouterOutlet>
+            <SetPageTitleContext.Provider value={setPageTitle}>
+              <IonRouterOutlet>
+                <Route exact path="/" component={Home}></Route>
+                <Route exact path="/home">
+                  <Redirect to="/"></Redirect>
+                </Route>
+                <Route path="/settings" component={Settings}></Route>
+                <Route path="/example" component={Example}></Route>
+                <Route component={Default}></Route>
+              </IonRouterOutlet>
+            </SetPageTitleContext.Provider>
           </IonContent>
           <IonFooter>
             <IonToolbar>
@@ -90,4 +96,4 @@ function App() {
   );
 }
 
-export default App
+export default App;

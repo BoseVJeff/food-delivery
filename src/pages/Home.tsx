@@ -1,6 +1,15 @@
 // The `/` route
 
+import { useContext, useEffect } from "react";
+import SetPageTitleContext from "../utils/PageTitleContext";
+
+
 function Home() {
+    // Typical use of this hook
+    const setPageHeader = useContext(SetPageTitleContext);
+    useEffect(() => {
+        setPageHeader("Food Delivery");
+    });
     return <>
         <h1>Heading 1</h1>
         <h2>Heading 2</h2>
