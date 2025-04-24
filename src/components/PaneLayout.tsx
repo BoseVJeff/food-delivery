@@ -1,6 +1,6 @@
-import { IonBadge, IonButton, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonSplitPane, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonSplitPane, IonTitle, IonToolbar } from '@ionic/react';
 
-import { cart, cartOutline } from 'ionicons/icons';
+import { cartOutline } from 'ionicons/icons';
 
 import { LayoutArgs } from '../utils/types';
 import { useLocation } from 'react-router';
