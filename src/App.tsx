@@ -31,7 +31,7 @@ import SearchPage from './pages/SearchPage';
 
 import { LayoutType, RouteInfo } from './utils/types';
 import { ReactNode, useEffect, useState } from 'react';
-import { TitleSetterContext } from './utils/contexts';
+import { CartContext, TitleSetterContext } from './utils/contexts';
 import { Redirect, Route } from 'react-router-dom';
 
 setupIonicReact();
@@ -151,9 +151,11 @@ function App() {
 
   return (
     <TitleSetterContext.Provider value={setAppTitle}>
-      <IonReactRouter>
-        <AppContent title={title} />
-      </IonReactRouter>
+      <CartContext.Provider value={[]}>
+        <IonReactRouter>
+          <AppContent title={title} />
+        </IonReactRouter>
+      </CartContext.Provider>
     </TitleSetterContext.Provider>
   );
 }

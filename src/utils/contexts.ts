@@ -1,7 +1,10 @@
 import { createContext } from "react";
+import { CartItem } from "./types";
 
 const TitleSetterContext = createContext<(newTitle: string) => void>(() => {
     console.log("No setter set!");
 });
 
-export { TitleSetterContext };
+const CartContext = createContext<CartItem[]>([]);
+
+export { TitleSetterContext, CartContext };

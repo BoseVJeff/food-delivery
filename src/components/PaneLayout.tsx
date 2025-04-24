@@ -1,6 +1,6 @@
 import { IonButton, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonSplitPane, IonTitle, IonToolbar } from '@ionic/react';
 
-import { cartOutline } from 'ionicons/icons';
+import { cart, cartOutline } from 'ionicons/icons';
 
 import { LayoutArgs } from '../utils/types';
 import { useLocation } from 'react-router';
@@ -8,8 +8,12 @@ import { useLocation } from 'react-router';
 import "./../assets/react.svg";
 
 import "./PaneLayout.css";
+import { useContext } from 'react';
+import { CartContext } from '../utils/contexts';
 
 function PaneLayout({ routes, isCompact, title, children }: LayoutArgs) {
+    let cartItems = useContext(CartContext);
+
     let currentRoute = useLocation().pathname;
     let menuItems = routes.map((e) => {
         let isCurrent = currentRoute == e.route;
@@ -58,8 +62,8 @@ function PaneLayout({ routes, isCompact, title, children }: LayoutArgs) {
                     <IonToolbar>
                         <IonTitle>{title}</IonTitle>
                         <IonButton slot='end' fill='clear' color='medium' shape='round'>
-                            <IonIcon icon={cartOutline}></IonIcon>
-                            {/* <IonBadge color="danger" slot='end'>5</IonBadge> */}
+                            <IonIcon icon={cartItems.length === 0 ? cartOutline : cart}></IonIcon>
+                            {/* <IonBadge color="danger" slot='end'>{cartItems.length}</IonBadge> */}
                         </IonButton>
                     </IonToolbar>
                 </IonHeader>
