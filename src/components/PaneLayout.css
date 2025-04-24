@@ -1,0 +1,21 @@
+ion-split-pane {
+    /* white/hidden */
+    /* --border: 1px solid #fff; */
+    /* TW 4.1 gray-300 */
+    /* TW 4.1 gray-700 */
+    /* --border: 1px solid #374151; */
+    --border: 1px solid #d1d5db;
+}
+
+ion-split-pane.expanded {
+    --side-min-width: 12rem;
+    --side-width: 20%;
+    --side-max-width: 16rem;
+}
+
+ion-split-pane.compact {
+    --side-min-width: 3.5rem;
+    --side-width: 3.5rem;
+    --side-max-width: 3.5rem;
+
+}

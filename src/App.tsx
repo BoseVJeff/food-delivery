@@ -1,5 +1,3 @@
-// "use strict";
-
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
 
@@ -16,84 +14,148 @@ import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
-import '@ionic/react/css/palettes/dark.class.css';
+import './App.css'
 
-import './theme/variables.css';
-
-import { IonHeader, IonToolbar, IonTitle, IonContent, setupIonicReact, IonFooter, IonApp, IonRouterOutlet, IonMenu, IonButtons, IonMenuButton, IonList, IonItem, IonListHeader } from '@ionic/react';
-import Home from './pages/Home';
+import { IonRouterOutlet, setupIonicReact } from '@ionic/react';
+import TabLayout from './components/TabLayout';
+import MenuLayout from './components/MenuLayout';
+import PaneLayout from './components/PaneLayout';
 import { IonReactRouter } from '@ionic/react-router';
+
+import { playCircle, radio, library, search } from 'ionicons/icons';
+
+import HomePage from './pages/HomePage';
+import LibraryPage from './pages/LibraryPage';
+import RadioPage from './pages/RadioPage';
+import SearchPage from './pages/SearchPage';
+
+import { LayoutType, RouteInfo } from './utils/types';
+import { ReactNode, useEffect, useState } from 'react';
+import { TitleSetterContext } from './utils/contexts';
 import { Redirect, Route } from 'react-router-dom';
-import Settings from './pages/Settings';
-import Example from './pages/Example';
-import Default from './pages/Default';
-import { useContext, useState } from 'react';
-import SetPageTitleContext from './utils/PageTitleContext';
 
 setupIonicReact();
 
-function App() {
-  let base_url = import.meta.env.BASE_URL;
-  let current_url = document.URL;
-  let url = new URL(base_url, current_url);
+const pages: RouteInfo[] = [
+  {
+    route: '/home',
+    title: 'Listen Now',
+    label: 'Listen',
+    icon: playCircle,
+    page: <HomePage />
+  },
+  {
+    route: '/radio',
+    title: 'Radio',
+    label: 'Radio',
+    icon: radio,
+    page: <RadioPage />
+  },
+  {
+    route: '/library',
+    title: 'Library',
+    label: 'Library',
+    icon: library,
+    page: <LibraryPage />
+  },
+  {
+    route: '/search',
+    title: 'Search',
+    label: 'Search',
+    icon: search,
+    page: <SearchPage />
+  },
+];
 
-  let basename = "/";
-  if (url.hostname.endsWith(".github.io")) {
-    basename = url.pathname;
-  }
-
-  const [pageTitle, setPageTitle] = useState<string>("");
-
+function RouterOutlet(): ReactNode {
   return (
-    <>
-      <IonReactRouter basename={basename}>
-        <IonMenu contentId='fd-app'>
-          <IonList>
-            <IonListHeader>
-              Food Delivery
-            </IonListHeader>
-            <IonItem routerLink='/'>
-              Home
-            </IonItem>
-            <IonItem routerLink='/settings'>
-              Settings
-            </IonItem>
-            <IonItem routerLink='/example'>
-              Example
-            </IonItem>
-          </IonList>
-        </IonMenu>
-        <IonApp>
-          <IonHeader>
-            <IonToolbar>
-              <IonTitle>{pageTitle}</IonTitle>
-              <IonButtons slot="start">
-                <IonMenuButton></IonMenuButton>
-              </IonButtons>
-            </IonToolbar>
-          </IonHeader>
-          <IonContent class='ion-padding' id='fd-app'>
-            <SetPageTitleContext.Provider value={setPageTitle}>
-              <IonRouterOutlet>
-                <Route exact path="/" component={Home}></Route>
-                <Route exact path="/home">
-                  <Redirect to="/"></Redirect>
-                </Route>
-                <Route path="/settings" component={Settings}></Route>
-                <Route path="/example" component={Example}></Route>
-                <Route component={Default}></Route>
-              </IonRouterOutlet>
-            </SetPageTitleContext.Provider>
-          </IonContent>
-          <IonFooter>
-            <IonToolbar>
-              <IonTitle>Footer</IonTitle>
-            </IonToolbar>
-          </IonFooter>
-        </IonApp>
-      </IonReactRouter>
-    </>
+    <IonRouterOutlet>
+      <IonRouterOutlet>
+        <Redirect exact path="/" to="/home" />
+
+        <Route path="/home" render={() => <HomePage />} exact={true} />
+        <Route path="/radio" render={() => <RadioPage />} exact={true} />
+        <Route path="/library" render={() => <LibraryPage />} exact={true} />
+        <Route path="/search" render={() => <SearchPage />} exact={true} />
+      </IonRouterOutlet>
+    </IonRouterOutlet>
   );
 }
 
-export default App;
+function AppContent({ title }: { title: string }) {
+  const [layoutType, setLayoutType] = useState<LayoutType>("tab");
+
+  const ro = new ResizeObserver((_) => {
+    let bodyWidth = window.innerWidth;
+    // Breakpoints from https://m3.material.io/foundations/layout/applying-layout/window-size-classes
+    if (bodyWidth < 600) {
+      setLayoutType("tab");
+    } else if (bodyWidth < 840) {
+      setLayoutType("menu");
+    } else if (bodyWidth < 1200) {
+      setLayoutType("compactPane");
+    } else {
+      setLayoutType("expandedPane");
+    }
+  });
+
+  useEffect(() => {
+    ro.observe(document.body);
+
+    return () => {
+      ro.unobserve(document.body);
+    };
+  });
+
+  switch (layoutType) {
+    case 'tab':
+      return (
+        <TabLayout routes={pages} isCompact={true} title={title}>
+          {RouterOutlet()}
+        </TabLayout>
+      );
+    case 'menu':
+      return (
+        <MenuLayout routes={pages} isCompact={true} title={title}>
+          <RouterOutlet />
+        </MenuLayout>
+      );
+    case 'compactPane':
+      return (
+        <PaneLayout routes={pages} isCompact={true} title={title}>
+          <RouterOutlet />
+        </PaneLayout>
+      );
+    case 'expandedPane':
+      return (
+        <PaneLayout routes={pages} isCompact={false} title={title}>
+          <RouterOutlet />
+        </PaneLayout>
+      );
+    default:
+      return (
+        <TabLayout routes={pages} isCompact={true} title={title}>
+          <RouterOutlet />
+        </TabLayout>
+      );
+  }
+}
+
+function App() {
+  const [title, setTitle] = useState<string>("Food Delivery");
+
+  function setAppTitle(newTitle: string) {
+    document.title = newTitle;
+    setTitle(newTitle);
+  }
+
+  return (
+    <TitleSetterContext.Provider value={setAppTitle}>
+      <IonReactRouter>
+        <AppContent title={title} />
+      </IonReactRouter>
+    </TitleSetterContext.Provider>
+  );
+}
+
+export default App

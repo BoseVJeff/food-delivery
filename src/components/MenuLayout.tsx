@@ -1,0 +1,55 @@
+import { IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuButton, IonMenuToggle, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+
+import { useLocation } from "react-router-dom";
+
+import { LayoutArgs } from '../utils/types';
+
+function MenuLayout({ routes, title, children }: LayoutArgs) {
+    // let currentRoute = window.location.pathname;
+    let currentRoute = useLocation().pathname;
+    let menuItems = routes.map((e) => {
+        let isCurrent = currentRoute == e.route;
+        return <IonMenuToggle><IonItem routerLink={e.route} key={e.label}>
+            <IonIcon slot='start' icon={e.icon} aria-hidden="true" color={isCurrent ? "primary" : undefined}></IonIcon>
+            <IonLabel color={isCurrent ? "primary" : undefined}>
+                {e.label}
+            </IonLabel>
+        </IonItem>
+        </IonMenuToggle>;
+    }
+    );
+
+    return (
+        <>
+            <IonMenu contentId="main-content">
+                <IonList lines='none'>
+                    <IonListHeader>
+                        <IonLabel>
+                            Food Delivery
+                        </IonLabel>
+                    </IonListHeader>
+                    {menuItems}
+                </IonList>
+            </IonMenu>
+            <IonPage id="main-content">
+                <IonHeader>
+                    <IonToolbar>
+                        <IonButtons slot="start">
+                            <IonMenuButton></IonMenuButton>
+                        </IonButtons>
+                        <IonTitle>{title}</IonTitle>
+                    </IonToolbar>
+                </IonHeader>
+                <IonContent className="ion-padding">
+                    {children}
+                    {/* <IonRouterOutlet>
+                        {routerRedirects}
+                        {routerRoutes}
+                    </IonRouterOutlet> */}
+                </IonContent>
+            </IonPage>
+        </>
+    );
+}
+
+export default MenuLayout;
