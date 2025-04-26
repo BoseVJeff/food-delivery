@@ -29,7 +29,7 @@ import HomePage from './pages/HomePage';
 
 import { LayoutType, RouteInfo } from './utils/types';
 import { ReactNode, useEffect, useState } from 'react';
-import { TitleSetterContext } from './utils/contexts';
+import { CartContext, TitleSetterContext } from './utils/contexts';
 import { Redirect, Route } from 'react-router-dom';
 import AboutUs from './pages/AboutUs';
 import CartPage from './pages/CartPage';
@@ -140,11 +140,13 @@ function App() {
 
   return (
     <TitleSetterContext.Provider value={setAppTitle}>
-      <IonReactRouter>
-        <AppContent title={title} />
-        <Route path="/login" render={() => <Login/>} exact={true} />
+      <CartContext.Provider value={[]}>
+        <IonReactRouter>
+          <AppContent title={title} />
+          <Route path="/login" render={() => <Login/>} exact={true} />
         <Route path="/SignUp" render={() => <SignUp/>} exact={true} />
-      </IonReactRouter>
+        </IonReactRouter>
+      </CartContext.Provider>
     </TitleSetterContext.Provider>
   );
 }

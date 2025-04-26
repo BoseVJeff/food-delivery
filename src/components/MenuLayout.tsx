@@ -1,10 +1,15 @@
-import { IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuButton, IonMenuToggle, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuButton, IonMenuToggle, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 
 import { useLocation } from "react-router-dom";
 
 import { LayoutArgs } from '../utils/types';
+import { cartOutline, cart } from 'ionicons/icons';
+import { CartContext } from '../utils/contexts';
+import { useContext } from 'react';
 
 function MenuLayout({ routes, title, children }: LayoutArgs) {
+    let cartItems = useContext(CartContext);
+
     // let currentRoute = window.location.pathname;
     let currentRoute = useLocation().pathname;
     let menuItems = routes.map((e) => {
@@ -40,6 +45,10 @@ function MenuLayout({ routes, title, children }: LayoutArgs) {
                             <IonMenuButton></IonMenuButton>
                         </IonButtons>
                         <IonTitle>{title}</IonTitle>
+                        <IonButton slot='end' fill='clear' color='medium' shape='round'>
+                            <IonIcon icon={cartItems.length === 0 ? cartOutline : cart}></IonIcon>
+                            {/* <IonBadge color="danger" slot='end'>{cartItems.length}</IonBadge> */}
+                        </IonButton>
                     </IonToolbar>
                 </IonHeader>
                 <IonContent>

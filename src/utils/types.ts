@@ -1,5 +1,7 @@
 import { ReactNode } from "react";
 
+// -----------
+
 /**
  * Type for values needed to define a route
  */
@@ -37,4 +39,16 @@ type LayoutArgs = {
 
 type LayoutType = "tab" | "menu" | "compactPane" | "expandedPane";
 
-export type { RouteInfo, LayoutArgs, LayoutType };
+// --------------------
+
+type CartItem = {
+    "id": string,
+    "name": string,
+    "description": string,
+    "price": number,
+    "quantity": number,
+};
+
+// --------------------
+
+export type { RouteInfo, LayoutArgs, LayoutType, CartItem };

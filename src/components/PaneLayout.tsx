@@ -14,7 +14,7 @@ import {
   IonToolbar,
 } from "@ionic/react";
 
-import { cartOutline, logInOutline } from "ionicons/icons";
+import { cart, cartOutline, logInOutline } from "ionicons/icons";
 
 import { LayoutArgs } from "../utils/types";
 import { useLocation } from "react-router";
@@ -22,23 +22,23 @@ import { useLocation } from "react-router";
 import "./../assets/react.svg";
 
 import "./PaneLayout.css";
+import { useContext } from 'react';
+import { CartContext } from '../utils/contexts';
 
 function PaneLayout({ routes, isCompact, title, children }: LayoutArgs) {
-  let currentRoute = useLocation().pathname;
-  let menuItems = routes.map((e) => {
-    let isCurrent = currentRoute == e.route;
-    return (
-      <IonItem routerLink={e.route} key={e.label ?? e.title}>
-        <IonIcon
-          slot="start"
-          icon={e.icon}
-          aria-hidden="true"
-          color={isCurrent ? "danger" : "medium"}
-        ></IonIcon>
-        <IonLabel color={isCurrent ? "danger" : undefined}>{e.label}</IonLabel>
-      </IonItem>
+    let cartItems = useContext(CartContext);
+
+    let currentRoute = useLocation().pathname;
+    let menuItems = routes.map((e) => {
+        let isCurrent = currentRoute == e.route;
+        return <IonItem routerLink={e.route} key={e.label ?? e.title}>
+            <IonIcon slot='start' icon={e.icon} aria-hidden="true" color={isCurrent ? "primary" : "medium"}></IonIcon>
+            <IonLabel color={isCurrent ? "primary" : undefined}>
+                {e.label}
+            </IonLabel>
+        </IonItem>;
+    }
     );
-  });
 
   let compactMenuItems = routes.map((e) => {
     let isCurrent = currentRoute == e.route;
@@ -113,24 +113,19 @@ function PaneLayout({ routes, isCompact, title, children }: LayoutArgs) {
         {/* </IonContent> */}
       </IonMenu>
 
-      <div className="ion-page" id="main-content">
-        <IonHeader className="!shadow-none [--box-shadow:none]">
-          <IonToolbar className="shadow-sm backdrop-blur-2xl">
-            <IonTitle className="font-inter">{title}</IonTitle>
-
-            <IonButton
-              routerLink="/cart"
-              className="pr-8"
-              color={"danger"}
-              slot="end"
-            >
-              <IonIcon icon={cartOutline}></IonIcon>
-            </IonButton>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent className="ion-padding">
-          {children}
-          {/* <IonRouterOutlet>
+            <div className="ion-page" id="main-content">
+                <IonHeader>
+                    <IonToolbar>
+                        <IonTitle>{title}</IonTitle>
+                        <IonButton slot='end' fill='clear' color='medium' shape='round'>
+                            <IonIcon icon={cartItems.length === 0 ? cartOutline : cart}></IonIcon>
+                            {/* <IonBadge color="danger" slot='end'>{cartItems.length}</IonBadge> */}
+                        </IonButton>
+                    </IonToolbar>
+                </IonHeader>
+                <IonContent className="ion-padding">
+                    {children}
+                    {/* <IonRouterOutlet>
                         {routerRedirects}
                         {routerRoutes}
                     </IonRouterOutlet> */}
