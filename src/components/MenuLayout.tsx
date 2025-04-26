@@ -21,17 +21,19 @@ function MenuLayout({ routes, title, children }: LayoutArgs) {
 
     return (
         <>
-            <IonMenu contentId="main-content">
+            <IonMenu contentId="main-content" className=' bg-[#f8f8f8]'>
                 <IonList lines='none'>
                     <IonListHeader>
                         <IonLabel>
-                            Food Delivery
+                            GrubGo
                         </IonLabel>
                     </IonListHeader>
+                    <IonLabel>asdad</IonLabel>
                     {menuItems}
+                    
                 </IonList>
             </IonMenu>
-            <IonPage id="main-content">
+            <IonPage id="main-content" >
                 <IonHeader>
                     <IonToolbar>
                         <IonButtons slot="start">
@@ -40,7 +42,7 @@ function MenuLayout({ routes, title, children }: LayoutArgs) {
                         <IonTitle>{title}</IonTitle>
                     </IonToolbar>
                 </IonHeader>
-                <IonContent className="ion-padding">
+                <IonContent>
                     {children}
                     {/* <IonRouterOutlet>
                         {routerRedirects}

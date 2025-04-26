@@ -16,54 +16,43 @@ import '@ionic/react/css/display.css';
 
 import './App.css'
 
-import { IonRouterOutlet, setupIonicReact } from '@ionic/react';
+import { IonItem, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import TabLayout from './components/TabLayout';
 import MenuLayout from './components/MenuLayout';
 import PaneLayout from './components/PaneLayout';
 import { IonReactRouter } from '@ionic/react-router';
 
-import { playCircle, radio, library, search } from 'ionicons/icons';
+import { playCircle, home,radio, library, search, peopleCircle } from 'ionicons/icons';
 
 import HomePage from './pages/HomePage';
-import LibraryPage from './pages/LibraryPage';
-import RadioPage from './pages/RadioPage';
-import SearchPage from './pages/SearchPage';
+
 
 import { LayoutType, RouteInfo } from './utils/types';
 import { ReactNode, useEffect, useState } from 'react';
 import { TitleSetterContext } from './utils/contexts';
 import { Redirect, Route } from 'react-router-dom';
+import AboutUs from './pages/AboutUs';
+import CartPage from './pages/CartPage';
+import Login from './pages/Login';
+import SignUp from './pages/SignUp';
 
 setupIonicReact();
 
 const pages: RouteInfo[] = [
   {
     route: '/home',
-    title: 'Listen Now',
-    label: 'Listen',
-    icon: playCircle,
+    title: 'Home',
+    label: 'Home',
+    icon: home,
     page: <HomePage />
   },
+
   {
-    route: '/radio',
-    title: 'Radio',
-    label: 'Radio',
-    icon: radio,
-    page: <RadioPage />
-  },
-  {
-    route: '/library',
-    title: 'Library',
-    label: 'Library',
-    icon: library,
-    page: <LibraryPage />
-  },
-  {
-    route: '/search',
-    title: 'Search',
-    label: 'Search',
-    icon: search,
-    page: <SearchPage />
+    route: '/aboutUs',
+    title: 'AboutUs',
+    label: 'About Us',
+    icon: peopleCircle,
+    page: <AboutUs/>
   },
 ];
 
@@ -72,11 +61,11 @@ function RouterOutlet(): ReactNode {
     <IonRouterOutlet>
       <IonRouterOutlet>
         <Redirect exact path="/" to="/home" />
-
+        
         <Route path="/home" render={() => <HomePage />} exact={true} />
-        <Route path="/radio" render={() => <RadioPage />} exact={true} />
-        <Route path="/library" render={() => <LibraryPage />} exact={true} />
-        <Route path="/search" render={() => <SearchPage />} exact={true} />
+        <Route path="/aboutUs" render={() => <AboutUs />} exact={true} />
+        <Route path="/cart" render={() => <CartPage/>} exact={true}/>
+        
       </IonRouterOutlet>
     </IonRouterOutlet>
   );
@@ -153,6 +142,8 @@ function App() {
     <TitleSetterContext.Provider value={setAppTitle}>
       <IonReactRouter>
         <AppContent title={title} />
+        <Route path="/login" render={() => <Login/>} exact={true} />
+        <Route path="/SignUp" render={() => <SignUp/>} exact={true} />
       </IonReactRouter>
     </TitleSetterContext.Provider>
   );

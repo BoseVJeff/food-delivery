@@ -3,6 +3,12 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  
+}
+
+
+ion-label{
+  padding-left: 0.5rem;
 }
 
 .logo {
