@@ -75,41 +75,41 @@ const HomePage = () => {
   return (
     <>
       <IonContent>
-        <div className="p-10 font-inter flex gap-5">
+        <div className="md:p-10 p-5 font-inter flex gap-5 flex-col md:flex-row">
           <div className="w-full">
-            <p className=" text-4xl font-bold text-left border-b-2 pb-2 border-[#eee]">
+            <p className=" text-4xl font-bold text-left border-b-2 pb-2 md:pt-0 pt-15  border-[#eee]">
               Your Cart
             </p>
             <div className="pt-10">
               {/* items Card */}
               {cartItem.map((items) => (
-                <div key={items.id} className="h-[10rem] w-[90%] rounded-xl flex gap-2 shadow-sm border-2 border-[#eee] mb-5">
+                <div key={items.id} className="h-[10rem] md:h-[10rem] w-[100%] md:w-[90%] rounded-xl flex gap-2 shadow-sm border-2 border-[#eee] mb-5">
                   <img
                     src="https://ionicframework.com/docs/img/demos/card-media.png"
                     alt="silluate of mountains"
-                    className=" h-full w-[25%] object-cover rounded-lg scale-90"
+                    className=" h-full w-[30%] object-cover rounded-lg scale-90 md:w-[25%]"
                   />
-                  <div className="p-2 flex flex-col justify-between w-[45%]">
-                    <p className="text-[1.6rem] font-inter pt-4 text-left font-semibold">
+                  <div className="p-2 flex flex-col justify-between w-[28%] md:w-[45%]">
+                    <p className="text-[1.2rem] md:text-[1.6rem] font-inter pt-4 text-left font-semibold">
                       {items.name}
                     </p>
                     <p className="text-sm text-left truncate pb-2">
                       {items.description}
                     </p>
-                    <p className="text-2xl text-left pb-4">₹{items.price}</p>
+                    <p className="text-[1.2rem] text-left pb-4 md:text-2xl">₹{items.price}</p>
                   </div>
                   <div className="flex gap-4 justify-center items-center ">
                     <IonIcon
                       icon={add}
                       slot="start"
-                      className="text-xl cursor-pointer bg-[#f9f9f9] p-2 rounded-md border-2 border-[#eee]"
+                      className="text-[0.8rem] md:text-xl cursor-pointer bg-[#f9f9f9] p-2 rounded-md border-2 border-[#eee]"
                       onClick={() => incrementQuantity(items.id)}
                     />
-                    <p>{items.quantity}</p>
+                    <p className="text-[0.8rem] md:text-xl">{items.quantity}</p>
                     <IonIcon
                       icon={remove}
                       slot="start"
-                      className="text-xl cursor-pointer bg-[#f9f9f9] p-2 rounded-md border-2 border-[#eee]"
+                      className="text-[0.8rem] md:text-xl cursor-pointer bg-[#f9f9f9] p-2 rounded-md border-2 border-[#eee]"
                       onClick={() => decrementQuantity(items.id)}
                     />
                   </div>

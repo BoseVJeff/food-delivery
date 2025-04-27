@@ -33,7 +33,7 @@ function MenuLayout({ routes, title, children }: LayoutArgs) {
                             GrubGo
                         </IonLabel>
                     </IonListHeader>
-                    <IonLabel>asdad</IonLabel>
+                    <IonLabel></IonLabel>
                     {menuItems}
                     
                 </IonList>

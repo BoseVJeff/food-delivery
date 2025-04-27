@@ -1,48 +1,82 @@
-import { IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonHeader, IonToolbar, IonTitle, IonButton } from '@ionic/react';
+import {
+  IonTabs,
+  IonTabBar,
+  IonTabButton,
+  IonIcon,
+  IonLabel,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonButton,
+} from "@ionic/react";
 
-import { useLocation } from 'react-router';
+import { useLocation } from "react-router";
 
-import { LayoutArgs } from '../utils/types';
-import { CartContext } from '../utils/contexts';
-import { useContext } from 'react';
-import { cart, cartOutline } from 'ionicons/icons';
+import { LayoutArgs } from "../utils/types";
+import { CartContext } from "../utils/contexts";
+import { useContext } from "react";
+import { cart, cartOutline, logInOutline } from "ionicons/icons";
 
 function TabLayout({ routes, title, children }: LayoutArgs) {
-    let cartItems = useContext(CartContext);
+  let cartItems = useContext(CartContext);
 
-    let currentRoute = useLocation().pathname;
+  let currentRoute = useLocation().pathname;
 
-    let ionTabs = routes.map((e) => {
-        let isCurrent = currentRoute == e.route;
-        return <IonTabButton tab={e.label} href={e.route}>
-            <IonIcon icon={e.icon} color={isCurrent ? "primary" : undefined}></IonIcon>
-            <IonLabel color={isCurrent ? "primary" : undefined}>{e.label ?? e.title}</IonLabel>
-        </IonTabButton>;
-    });
-
+  let ionTabs = routes.map((e) => {
+    let isCurrent = currentRoute == e.route;
     return (
-        <>
-            <IonTabs>
-                <IonHeader>
-                    <IonToolbar>
-                        <IonTitle>{title}</IonTitle>
-                        <IonButton slot='end' fill='clear' color='medium' shape='round'>
-                            <IonIcon icon={cartItems.length === 0 ? cartOutline : cart}></IonIcon>
-                            {/* <IonBadge color="danger" slot='end'>{cartItems.length}</IonBadge> */}
-                        </IonButton>
-                    </IonToolbar>
-                </IonHeader>
-                {children}
-                {/* <IonRouterOutlet>
+      <IonTabButton tab={e.label} href={e.route}>
+        <IonIcon
+          icon={e.icon}
+          color={isCurrent ? "danger" : undefined}
+        ></IonIcon>
+        <IonLabel color={isCurrent ? "danger" : undefined}>
+          {e.label ?? e.title}
+        </IonLabel>
+      </IonTabButton>
+    );
+  });
+
+  return (
+    <>
+      <IonTabs>
+        <IonHeader className="!shadow-none [--box-shadow:none]">
+          <IonToolbar className="shadow-sm backdrop-blur-2xl">
+            <IonTitle>{title}</IonTitle>
+            <IonButton
+              routerLink="/cart"
+              className="pr-8"
+              color={"danger"}
+              slot="end"
+            >
+              <IonIcon
+                icon={cartItems.length === 0 ? cartOutline : cart}
+              ></IonIcon>
+              {/* <IonBadge color="danger" slot='end'>{cartItems.length}</IonBadge> */}
+            </IonButton>
+          </IonToolbar>
+        </IonHeader>
+        {children}
+        {/* <IonRouterOutlet>
                     {routerRedirects}
                     {routerRoutes}
                 </IonRouterOutlet> */}
 
-                <IonTabBar slot="bottom">
-                    {ionTabs}
-                </IonTabBar>
-            </IonTabs>
-        </>
-    );
+        <IonTabBar slot="bottom">
+          {ionTabs}
+          <IonTabButton>
+            
+            <div
+              className="flex justify-center flex-col items-center p-2 pl-4 hover:bg-[#f5f5f5] cursor-pointer "
+              id="present-alert"
+            >
+              <IonIcon icon={logInOutline} slot="start" className="text-2xl" />
+              <IonLabel className="bg-none cursor-pointer">Log Out</IonLabel>
+            </div>
+          </IonTabButton>
+        </IonTabBar>
+      </IonTabs>
+    </>
+  );
 }
 export default TabLayout;
