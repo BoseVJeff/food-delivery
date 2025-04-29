@@ -1,4 +1,4 @@
-import { logInOutline, mailOutline, lockClosedOutline, person } from 'ionicons/icons';
+import { mailOutline, lockClosedOutline, person } from 'ionicons/icons';
 import { useState } from 'react';
 
 import {
@@ -16,23 +16,23 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    console.log('Login attempted with:',username, email, password);
+    console.log('Login attempted with:', username, email, password);
   };
 
   return (
     <IonPage>
       <IonContent fullscreen className="ion-padding">
         <div className="h-full w-full flex items-center justify-center flex-col gap-5 font-inter">
-        <p className='text-5xl font-inter font-extrabold'>GrubGo</p>
+          <p className='text-5xl font-inter font-extrabold'>GrubGo</p>
           <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
-            
+
             <div className="text-center mb-6">
               <p className="text-4xl font-bold pb-2 text-gray-800">Sign Up!</p>
 
             </div>
 
             <div className="space-y-4">
-            <div className="relative">
+              <div className="relative">
                 <IonIcon
                   icon={person}
                   className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
@@ -82,7 +82,7 @@ const Login: React.FC = () => {
                 onClick={handleLogin}
                 className="w-full"
               >
-                
+
                 Sign Up
               </IonButton>
             </div>
