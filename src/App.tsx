@@ -16,20 +16,20 @@ import '@ionic/react/css/display.css';
 
 import './App.css'
 
-import { IonItem, IonRouterOutlet, setupIonicReact } from '@ionic/react';
+import { IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import TabLayout from './components/TabLayout';
 import MenuLayout from './components/MenuLayout';
 import PaneLayout from './components/PaneLayout';
 import { IonReactRouter } from '@ionic/react-router';
 
-import { playCircle, home,radio, library, search, peopleCircle } from 'ionicons/icons';
+import { cart, home, peopleCircle } from 'ionicons/icons';
 
 import HomePage from './pages/HomePage';
 
 
 import { LayoutType, RouteInfo } from './utils/types';
-import { ReactNode, useEffect, useState } from 'react';
-import { CartContext, TitleSetterContext } from './utils/contexts';
+import { ReactNode, useContext, useEffect, useState } from 'react';
+import { AuthProvider, MenuVisiblity, TitleSetterContext, UserContext } from './utils/contexts';
 import { Redirect, Route } from 'react-router-dom';
 import AboutUs from './pages/AboutUs';
 import CartPage from './pages/CartPage';
@@ -41,38 +41,65 @@ setupIonicReact();
 const pages: RouteInfo[] = [
   {
     route: '/home',
-    title: 'Home',
+    title: 'Grub Go',
     label: 'Home',
     icon: home,
-    page: <HomePage />
+    page: <HomePage />,
+    hasMenuItem: true,
   },
-
+  {
+    route: '/cart',
+    title: 'Cart',
+    label: 'Cart',
+    icon: cart,
+    page: <CartPage />,
+    hasMenuItem: true,
+  },
   {
     route: '/aboutUs',
-    title: 'AboutUs',
+    title: 'About Us',
     label: 'About Us',
     icon: peopleCircle,
-    page: <AboutUs/>
+    page: <AboutUs />,
+    hasMenuItem: true,
   },
 ];
 
+const FORCE_LOGIN: boolean = false;
+
 function RouterOutlet(): ReactNode {
+  let user = useContext(UserContext);
+
+  if (!FORCE_LOGIN && user.user === null) {
+    // console.log("No user");
+    return (
+      <IonRouterOutlet>
+        <Route path="/login" render={() => <Login />} exact={true} />
+        <Route path="/SignUp" render={() => <SignUp />} exact={true} />
+        <Redirect to="/login" />
+      </IonRouterOutlet>
+    );
+  }
+
   return (
     <IonRouterOutlet>
-      <IonRouterOutlet>
-        <Redirect exact path="/" to="/home" />
-        
-        <Route path="/home" render={() => <HomePage />} exact={true} />
-        <Route path="/aboutUs" render={() => <AboutUs />} exact={true} />
-        <Route path="/cart" render={() => <CartPage/>} exact={true}/>
-        
-      </IonRouterOutlet>
+      <Redirect exact path="/" to="/home" />
+      <Redirect exact path="/login" to="/home" />
+      <Redirect exact path="/SignUp" to="/home" />
+
+      <Route path="/home" render={() => <HomePage />} exact={true} />
+      <Route path="/aboutUs" render={() => <AboutUs />} exact={true} />
+      <Route path="/cart" render={() => <CartPage />} exact={true} />
+      {/* <Route path="/login" render={() => <Login />} exact={true} /> */}
+      {/* <Route path="/SignUp" render={() => <SignUp />} exact={true} /> */}
     </IonRouterOutlet>
   );
 }
 
 function AppContent({ title }: { title: string }) {
   const [layoutType, setLayoutType] = useState<LayoutType>("tab");
+  let user = useContext(UserContext);
+  let showMenu: boolean = FORCE_LOGIN || user.user !== null;
 
   const ro = new ResizeObserver((_) => {
     let bodyWidth = window.innerWidth;
@@ -99,33 +126,43 @@ function AppContent({ title }: { title: string }) {
   switch (layoutType) {
     case 'tab':
       return (
-        <TabLayout routes={pages} isCompact={true} title={title}>
-          {RouterOutlet()}
-        </TabLayout>
+        <MenuVisiblity.Provider value={showMenu}>
+          <TabLayout routes={pages.filter((e) => e.hasMenuItem)} isCompact={true} title={title}>
+            {RouterOutlet()}
+          </TabLayout>
+        </MenuVisiblity.Provider>
       );
     case 'menu':
       return (
-        <MenuLayout routes={pages} isCompact={true} title={title}>
-          <RouterOutlet />
-        </MenuLayout>
+        <MenuVisiblity.Provider value={showMenu}>
+          <MenuLayout routes={pages.filter((e) => e.hasMenuItem)} isCompact={true} title={title}>
+            <RouterOutlet />
+          </MenuLayout>
+        </MenuVisiblity.Provider>
       );
     case 'compactPane':
       return (
-        <PaneLayout routes={pages} isCompact={true} title={title}>
-          <RouterOutlet />
-        </PaneLayout>
+        <MenuVisiblity.Provider value={showMenu}>
+          <PaneLayout routes={pages.filter((e) => e.hasMenuItem)} isCompact={true} title={title}>
+            <RouterOutlet />
+          </PaneLayout>
+        </MenuVisiblity.Provider>
       );
     case 'expandedPane':
       return (
-        <PaneLayout routes={pages} isCompact={false} title={title}>
-          <RouterOutlet />
-        </PaneLayout>
+        <MenuVisiblity.Provider value={showMenu}>
+          <PaneLayout routes={pages.filter((e) => e.hasMenuItem)} isCompact={false} title={title}>
+            <RouterOutlet />
+          </PaneLayout>
+        </MenuVisiblity.Provider>
       );
     default:
       return (
-        <TabLayout routes={pages} isCompact={true} title={title}>
-          <RouterOutlet />
-        </TabLayout>
+        <MenuVisiblity.Provider value={showMenu}>
+          <TabLayout routes={pages} isCompact={true} title={title}>
+            <RouterOutlet />
+          </TabLayout>
+        </MenuVisiblity.Provider>
       );
   }
 }
@@ -140,15 +177,15 @@ function App() {
 
   return (
     <TitleSetterContext.Provider value={setAppTitle}>
-      <CartContext.Provider value={[]}>
+      {/* <MenuVisiblity.Provider value={false}> */}
+      <UserContext.Provider value={new AuthProvider()}>
         <IonReactRouter>
           <AppContent title={title} />
-          <Route path="/login" render={() => <Login/>} exact={true} />
-        <Route path="/SignUp" render={() => <SignUp/>} exact={true} />
         </IonReactRouter>
-      </CartContext.Provider>
+      </UserContext.Provider>
+      {/* </MenuVisiblity.Provider> */}
     </TitleSetterContext.Provider>
   );
 }
 
-export default App
+export default App;

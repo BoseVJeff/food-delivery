@@ -1,24 +1,21 @@
 import {
   IonCard,
-  IonCardContent,
   IonCardHeader,
-  IonCardSubtitle,
   IonCardTitle,
   IonChip,
   IonContent,
   IonIcon,
-  IonInput,
 } from "@ionic/react";
 import { useContext } from "react";
 import { TitleSetterContext } from "../utils/contexts";
-import { logInOutline, search } from "ionicons/icons";
+import { search } from "ionicons/icons";
 
 const HomePage = () => {
   const titleSetter = useContext(TitleSetterContext);
 
   titleSetter("Home");
   const availableForToday = [1, 2, 3, 4, 5, 6, 7, 8, 5, 5, 2, 4, 5, 4];
-  const todaysSpecial = [1,2,3,4,5,6,7]
+  const todaysSpecial = [1, 2, 3, 4, 5, 6, 7]
 
   return (
     <>
@@ -43,17 +40,17 @@ const HomePage = () => {
             </div>
             <p className="text-left font-bold text-2xl pb-3 pt-5 border-b-2 border-[#eee] ">
               Today's Special
-              </p>
-              <div className="flex overflow-x-auto pb-5 pt-5 scrollbar-hide gap-5" 
-           style={{ 
-             scrollbarWidth: 'none', 
-             msOverflowStyle: 'none',
-             WebkitOverflowScrolling: 'touch'
-           }}>
-              {todaysSpecial.map((element) => (
-                <IonCard               className="min-w-[17rem] w-[17rem] flex-shrink-0 rounded-xl shadow-md border-2 border-[#e0e0e0] cursor-pointer hover:scale-105 transition-all duration-300 ease-in-out"
+            </p>
+            <div className="flex overflow-x-auto pb-5 pt-5 scrollbar-hide gap-5 px-1"
+              style={{
+                scrollbarWidth: 'none',
+                msOverflowStyle: 'none',
+                WebkitOverflowScrolling: 'touch'
+              }}>
+              {todaysSpecial.map(() => (
+                <IonCard className="min-w-[17rem] w-[17rem] flex-shrink-0 rounded-xl shadow-sm border-2 border-[#e0e0e0] cursor-pointer hover:scale-105 hover:shadow-md transition-all duration-300 ease-in-out"
                 >
-    
+
                   <div className="h-[11rem] overflow-hidden">
                     <img
                       alt="Silhouette of mountains"
@@ -72,28 +69,32 @@ const HomePage = () => {
                   </p>
                 </IonCard>
               ))}
-              
+
             </div>
             <div className="hidden md:flex justify-end gap-2 mt-2">
-        <button 
-          className="bg-gray-200 hover:bg-gray-300 p-2 rounded-full"
-          onClick={() => {
-            const container = document.querySelector('.overflow-x-auto');
-            container.scrollBy({ left: -300, behavior: 'smooth' });
-          }}
-        >
-          &larr;
-        </button>
-        <button 
-          className="bg-gray-200 hover:bg-gray-300 p-2 rounded-full"
-          onClick={() => {
-            const container = document.querySelector('.overflow-x-auto');
-            container.scrollBy({ left: 300, behavior: 'smooth' });
-          }}
-        >
-          &rarr;
-        </button>
-      </div>
+              <button
+                className="bg-gray-200 hover:bg-gray-300 p-2 rounded-full"
+                onClick={() => {
+                  const container = document.querySelector('.overflow-x-auto');
+                  if (container !== null) {
+                    container.scrollBy({ left: -300, behavior: 'smooth' });
+                  }
+                }}
+              >
+                &larr;
+              </button>
+              <button
+                className="bg-gray-200 hover:bg-gray-300 p-2 rounded-full"
+                onClick={() => {
+                  const container = document.querySelector('.overflow-x-auto');
+                  if (container !== null) {
+                    container.scrollBy({ left: 300, behavior: 'smooth' });
+                  }
+                }}
+              >
+                &rarr;
+              </button>
+            </div>
 
 
             <p className="text-left font-bold text-2xl pb-3 pt-5 border-b-2 border-[#eee] ">
@@ -108,7 +109,7 @@ const HomePage = () => {
               </IonChip>
             </div>
             <div className=" flex flex-wrap gap-8 pt-5">
-              {availableForToday.map((element) => (
+              {availableForToday.map(() => (
                 <IonCard className=" md:w-[17rem] w-[100%] rounded-xl shadow-md border-2 border-[#e0e0e0]  cursor-pointer hover:scale-105 transition-all duration-300 ease-in-out">
                   <div className="h-[11rem] overflow-hidden">
                     <img

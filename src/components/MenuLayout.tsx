@@ -3,12 +3,16 @@ import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonLabe
 import { useLocation } from "react-router-dom";
 
 import { LayoutArgs } from '../utils/types';
-import { cartOutline, cart } from 'ionicons/icons';
-import { CartContext } from '../utils/contexts';
+import { MenuVisiblity, UserContext } from '../utils/contexts';
 import { useContext } from 'react';
 
 function MenuLayout({ routes, title, children }: LayoutArgs) {
-    let cartItems = useContext(CartContext);
+    // let cartItems = useContext(CartContext);
+    let user = useContext(UserContext);
+    // @ts-ignore
+    let cartItems = user.cart;
+
+    let isMenuVisible = useContext(MenuVisiblity);
 
     // let currentRoute = window.location.pathname;
     let currentRoute = useLocation().pathname;
@@ -26,7 +30,7 @@ function MenuLayout({ routes, title, children }: LayoutArgs) {
 
     return (
         <>
-            <IonMenu contentId="main-content" className=' bg-[#f8f8f8]'>
+            {!isMenuVisible ? null : <IonMenu contentId="main-content">{/* className='bg-[#f8f8f8]' */}
                 <IonList lines='none'>
                     <IonListHeader>
                         <IonLabel>
@@ -35,18 +39,17 @@ function MenuLayout({ routes, title, children }: LayoutArgs) {
                     </IonListHeader>
                     <IonLabel></IonLabel>
                     {menuItems}
-                    
                 </IonList>
-            </IonMenu>
+            </IonMenu>}
             <IonPage id="main-content" >
                 <IonHeader>
                     <IonToolbar>
-                        <IonButtons slot="start">
+                        {!isMenuVisible ? null : <IonButtons slot="start">
                             <IonMenuButton></IonMenuButton>
-                        </IonButtons>
+                        </IonButtons>}
                         <IonTitle>{title}</IonTitle>
                         <IonButton slot='end' fill='clear' color='medium' shape='round'>
-                            <IonIcon icon={cartItems.length === 0 ? cartOutline : cart}></IonIcon>
+                            {/* <IonIcon icon={cartItems.length === 0 ? cartOutline : cart}></IonIcon> */}
                             {/* <IonBadge color="danger" slot='end'>{cartItems.length}</IonBadge> */}
                         </IonButton>
                     </IonToolbar>

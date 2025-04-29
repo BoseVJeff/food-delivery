@@ -1,6 +1,4 @@
 import {
-  IonAlert,
-  IonButton,
   IonContent,
   IonHeader,
   IonIcon,
@@ -14,8 +12,6 @@ import {
   IonToolbar,
 } from "@ionic/react";
 
-import { cart, cartOutline, logInOutline } from "ionicons/icons";
-
 import { LayoutArgs } from "../utils/types";
 import { useLocation } from "react-router";
 
@@ -23,22 +19,27 @@ import "./../assets/react.svg";
 
 import "./PaneLayout.css";
 import { useContext } from 'react';
-import { CartContext } from '../utils/contexts';
+import { MenuVisiblity, UserContext } from '../utils/contexts';
 
 function PaneLayout({ routes, isCompact, title, children }: LayoutArgs) {
-    let cartItems = useContext(CartContext);
+  // let cartItems = useContext(CartContext);
+  let user = useContext(UserContext);
+  // @ts-ignore
+  let cartItems = user.cart;
 
-    let currentRoute = useLocation().pathname;
-    let menuItems = routes.map((e) => {
-        let isCurrent = currentRoute == e.route;
-        return <IonItem routerLink={e.route} key={e.label ?? e.title}>
-            <IonIcon slot='start' icon={e.icon} aria-hidden="true" color={isCurrent ? "danger" : "medium"}></IonIcon>
-            <IonLabel color={isCurrent ? "danger" : undefined}>
-                {e.label}
-            </IonLabel>
-        </IonItem>;
-    }
-    );
+  let isMenuVisible = useContext(MenuVisiblity);
+
+  let currentRoute = useLocation().pathname;
+  let menuItems = routes.map((e) => {
+    let isCurrent = currentRoute == e.route;
+    return <IonItem routerLink={e.route} key={e.label ?? e.title}>
+      <IonIcon slot='start' icon={e.icon} aria-hidden="true" color={isCurrent ? "primary" : "medium"}></IonIcon>
+      <IonLabel color={isCurrent ? "primary" : undefined}>
+        {e.label}
+      </IonLabel>
+    </IonItem>;
+  }
+  );
 
   let compactMenuItems = routes.map((e) => {
     let isCurrent = currentRoute == e.route;
@@ -59,7 +60,7 @@ function PaneLayout({ routes, isCompact, title, children }: LayoutArgs) {
       contentId="main-content"
       className={isCompact ? "compact" : "expanded"}
     >
-      <IonMenu contentId="main-content">
+      {!isMenuVisible ? null : <IonMenu contentId="main-content">
         {/* <IonHeader>
                     <IonToolbar>
                         <IonTitle>
@@ -76,7 +77,7 @@ function PaneLayout({ routes, isCompact, title, children }: LayoutArgs) {
             {/* </IonLabel> */}
           </IonListHeader>
           {isCompact ? compactMenuItems : menuItems}
-          <div className="flex p-2 pl-4 hover:bg-[#f5f5f5] cursor-pointer " id="present-alert">
+          {/* <div className="flex p-2 pl-4 hover:bg-[#f5f5f5] cursor-pointer " id="present-alert">
             <IonIcon icon={logInOutline} slot="start" className="text-2xl" />
             <IonLabel
               
@@ -84,8 +85,8 @@ function PaneLayout({ routes, isCompact, title, children }: LayoutArgs) {
             >
               Log Out
             </IonLabel>
-          </div>
-          <IonAlert
+          </div> */}
+          {/* <IonAlert
             header="Are you sure you want to log out?"
             trigger="present-alert"
             buttons={[
@@ -107,25 +108,25 @@ function PaneLayout({ routes, isCompact, title, children }: LayoutArgs) {
             onDidDismiss={({ detail }) =>
               console.log(`Dismissed with role: ${detail.role}`)
             }
-          ></IonAlert>
+          ></IonAlert> */}
         </IonList>
 
         {/* </IonContent> */}
-      </IonMenu>
+      </IonMenu>}
 
       <div className="ion-page" id="main-content">
         <IonHeader className="!shadow-none [--box-shadow:none]">
           <IonToolbar className="shadow-sm backdrop-blur-2xl">
             <IonTitle className="font-inter">{title}</IonTitle>
 
-            <IonButton
+            {/* <IonButton
               routerLink="/cart"
               className="pr-8"
               color={"danger"}
               slot="end"
             >
               <IonIcon icon={cartOutline}></IonIcon>
-            </IonButton>
+            </IonButton> */}
           </IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding">

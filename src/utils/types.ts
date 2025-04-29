@@ -28,6 +28,7 @@ type RouteInfo = {
      * The page to be rendered.
      */
     "page": React.ReactNode,
+    "hasMenuItem": boolean,
 };
 
 type LayoutArgs = {
@@ -51,4 +52,9 @@ type CartItem = {
 
 // --------------------
 
-export type { RouteInfo, LayoutArgs, LayoutType, CartItem };
+type User = {
+    id: string,
+    name: string,
+}
+
+export type { RouteInfo, LayoutArgs, LayoutType, CartItem, User };
