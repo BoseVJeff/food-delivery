@@ -1,5 +1,5 @@
 import { logInOutline, mailOutline, lockClosedOutline } from 'ionicons/icons';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 import {
   IonContent,
@@ -8,22 +8,43 @@ import {
   IonButton,
   IonIcon,
   IonText,
+  IonSpinner,
 } from '@ionic/react';
+import { UserContext } from '../utils/contexts';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  let user = useContext(UserContext);
+  console.log(user.user);
+
   const handleLogin = () => {
     // Add your login logic here
     console.log('Login attempted with:', email, password);
+
+    setIsLoading(true);
+
+    // setTimeout(() => { setIsLoading(false) }, 2000);
+
+    user.login(email, password).then(() => {
+      setIsLoading(false);
+      console.log(user.user);
+
+      // history.push("/home", {});
+      // console.dir(history);
+
+      window.location.assign("/home");
+    });
   };
 
   return (
     <IonPage>
       <IonContent fullscreen className="ion-padding">
         <div className="h-full w-full flex items-center justify-center flex-col gap-5">
-        <p className='text-5xl font-inter font-extrabold'>GrubGo</p>
+          <p className='text-5xl font-inter font-extrabold'>GrubGo</p>
           <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
             <div className="text-center mb-6">
               <p className="text-4xl font-bold pb-2 text-gray-800">Welcome Back!</p>
@@ -66,14 +87,19 @@ const Login: React.FC = () => {
                 color="danger"
                 onClick={handleLogin}
                 className="w-full"
+                disabled={isLoading}
               >
-                <IonIcon icon={logInOutline} slot="start" />
-                Login
+                {isLoading ? <IonSpinner></IonSpinner> :
+                  <>
+                    <IonIcon icon={logInOutline} slot="end" />
+                    Login
+                  </>
+                }
               </IonButton>
             </div>
 
             <div className="mt-4 text-center space-y-2">
-              
+
               <IonText color="medium">
                 <p className="text-sm text-gray-500">
                   Don't have an account?{' '}

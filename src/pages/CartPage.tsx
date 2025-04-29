@@ -1,23 +1,24 @@
 import { IonButton, IonContent, IonIcon, IonLabel } from "@ionic/react";
 import { useContext, useEffect, useState } from "react";
 import { TitleSetterContext } from "../utils/contexts";
-import { add, remove, trashBinOutline } from "ionicons/icons";
+import { add, remove } from "ionicons/icons";
+import { CartItem } from "../utils/types";
 
 const HomePage = () => {
   const titleSetter = useContext(TitleSetterContext);
 
   titleSetter("Cart");
 
-  const [cartItem, setCartItems] = useState([
+  const [cartItem, setCartItems] = useState<CartItem[]>([
     {
-      id: 0,
+      id: "0",
       name: "Lunch",
       description: "Aloo sabji, 2x roti, rice, daal chawal",
       price: 80,
       quantity: 1,
     },
     {
-      id: 1,
+      id: "1",
       name: "Aloo Paratha",
       description: "Aloo Paratha",
       price: 40,
@@ -26,47 +27,47 @@ const HomePage = () => {
   ]);
 
   // handling the summary page for totals and subtotals
-  
+
   const [subTotal, setSubTotal] = useState(0);
   const [taxes, setTaxes] = useState(0);
   const [total, setTotal] = useState(0);
 
-  useEffect(()=>{
+  useEffect(() => {
     let total = 0
     cartItem.forEach(element => {
-        total = total + (element.price * element.quantity)
+      total = total + (element.price * element.quantity)
     });
     setSubTotal(parseFloat(total.toFixed(2)))
-  },[cartItem])
+  }, [cartItem])
 
-  useEffect(()=>{
+  useEffect(() => {
     let totalTaxes = 0
     cartItem.forEach(element => {
-        let totalPrice = element.price * element.quantity
-        totalTaxes = totalTaxes + (totalPrice * 18/100)
+      let totalPrice = element.price * element.quantity
+      totalTaxes = totalTaxes + (totalPrice * 18 / 100)
     })
     setTaxes(parseFloat(totalTaxes.toFixed(2)))
-  },[cartItem, subTotal])
+  }, [cartItem, subTotal])
 
-  useEffect(()=>{
+  useEffect(() => {
     let total = subTotal + taxes
     setTotal(parseFloat(total.toFixed(2)))
-  },[cartItem, taxes])
+  }, [cartItem, taxes])
 
-  const incrementQuantity = (id) => {
-    setCartItems(prevItems => 
-      prevItems.map(item => 
+  const incrementQuantity = (id: string) => {
+    setCartItems(prevItems =>
+      prevItems.map(item =>
         item.id === id ? { ...item, quantity: item.quantity + 1 } : item
       )
     );
   };
 
   // Function to decrement quantity, but not below 1
-  const decrementQuantity = (id) => {
-    setCartItems(prevItems => 
-      prevItems.map(item => 
-        item.id === id && item.quantity > 1 
-          ? { ...item, quantity: item.quantity - 1 } 
+  const decrementQuantity = (id: string) => {
+    setCartItems(prevItems =>
+      prevItems.map(item =>
+        item.id === id && item.quantity > 1
+          ? { ...item, quantity: item.quantity - 1 }
           : item
       )
     );
@@ -115,8 +116,8 @@ const HomePage = () => {
                   </div>
                   <div className="flex justify-center items-center w-[15%]">
                     <IonLabel className="hover:bg-[#eee] text-center p-2 rounded-lg border-2 border-[#f3f3f3] transition-all duration-300 hover:text-red-500 cursor-pointer">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-trash2-icon lucide-trash-2 "><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
-                  </IonLabel>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-trash2-icon lucide-trash-2 "><path d="M3 6h18" /><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" /><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" /><line x1="10" x2="10" y1="11" y2="17" /><line x1="14" x2="14" y1="11" y2="17" /></svg>
+                    </IonLabel>
                   </div>
                 </div>
               ))}

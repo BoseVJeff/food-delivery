@@ -65,7 +65,7 @@ const pages: RouteInfo[] = [
   },
 ];
 
-const FORCE_LOGIN: boolean = false;
+const FORCE_LOGIN: boolean = true;
 
 function RouterOutlet(): ReactNode {
   let user = useContext(UserContext);
