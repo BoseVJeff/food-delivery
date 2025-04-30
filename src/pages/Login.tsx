@@ -10,13 +10,16 @@ import {
   IonText,
   IonSpinner,
 } from '@ionic/react';
-import { UserContext } from '../utils/contexts';
+import { TitleSetterContext, UserContext } from '../utils/contexts';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const titleSetter = useContext(TitleSetterContext);
+  titleSetter("Login");
 
   let user = useContext(UserContext);
   console.log(user.user);

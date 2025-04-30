@@ -1,5 +1,5 @@
 import { mailOutline, lockClosedOutline, person } from 'ionicons/icons';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 import {
   IonContent,
@@ -9,6 +9,7 @@ import {
   IonIcon,
   IonText,
 } from '@ionic/react';
+import { TitleSetterContext } from '../utils/contexts';
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -18,6 +19,9 @@ const Login: React.FC = () => {
   const handleLogin = () => {
     console.log('Login attempted with:', username, email, password);
   };
+
+  const titleSetter = useContext(TitleSetterContext);
+  titleSetter("Sign Up");
 
   return (
     <IonPage>
