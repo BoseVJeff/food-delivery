@@ -33,7 +33,6 @@ const Login: React.FC = () => {
       setIsLoading(false);
       console.log(user.user);
 
-      // history.push("/home", {});
       // console.dir(history);
 
       window.location.assign("/home");

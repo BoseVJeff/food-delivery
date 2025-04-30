@@ -16,7 +16,7 @@ import '@ionic/react/css/display.css';
 
 import './App.css'
 
-import { IonRouterOutlet, setupIonicReact } from '@ionic/react';
+import { IonRouterOutlet, IonSpinner, setupIonicReact } from '@ionic/react';
 import TabLayout from './components/TabLayout';
 import MenuLayout from './components/MenuLayout';
 import PaneLayout from './components/PaneLayout';
@@ -65,7 +65,7 @@ const pages: RouteInfo[] = [
   },
 ];
 
-const FORCE_LOGIN: boolean = true;
+const FORCE_LOGIN: boolean = false;
 
 function RouterOutlet(): ReactNode {
   let user = useContext(UserContext);
@@ -167,6 +167,8 @@ function AppContent({ title }: { title: string }) {
   }
 }
 
+const authProvider = new AuthProvider();
+
 function App() {
   const [title, setTitle] = useState<string>("Food Delivery");
 
@@ -175,15 +177,25 @@ function App() {
     setTitle(newTitle);
   }
 
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    authProvider.sync().then(() => {
+      setIsLoading(false);
+    });
+  });
+
+  if (isLoading) {
+    return <IonSpinner></IonSpinner>
+  }
+
   return (
     <TitleSetterContext.Provider value={setAppTitle}>
-      {/* <MenuVisiblity.Provider value={false}> */}
-      <UserContext.Provider value={new AuthProvider()}>
+      <UserContext.Provider value={authProvider}>
         <IonReactRouter>
           <AppContent title={title} />
         </IonReactRouter>
       </UserContext.Provider>
-      {/* </MenuVisiblity.Provider> */}
     </TitleSetterContext.Provider>
   );
 }

@@ -1,6 +1,6 @@
 import { IonButton, IonContent, IonIcon, IonLabel } from "@ionic/react";
 import { useContext, useEffect, useState } from "react";
-import { TitleSetterContext } from "../utils/contexts";
+import { TitleSetterContext, UserContext } from "../utils/contexts";
 import { add, remove } from "ionicons/icons";
 import { CartItem } from "../utils/types";
 
@@ -25,6 +25,14 @@ const HomePage = () => {
       quantity: 1,
     },
   ]);
+
+  const user = useContext(UserContext);
+
+  useEffect(() => {
+    user.getCart().then(() => {
+      setCartItems(user.cart);
+    });
+  }, [user]);
 
   // handling the summary page for totals and subtotals
 
