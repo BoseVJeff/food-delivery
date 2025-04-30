@@ -42,12 +42,22 @@ type LayoutType = "tab" | "menu" | "compactPane" | "expandedPane";
 
 // --------------------
 
+type FoodItem = {
+    "id": string,
+    "name": string,
+    "description": string,
+    "price": number,
+    "isSpecial": boolean,
+    "image": string,
+};
+
 type CartItem = {
     "id": string,
     "name": string,
     "description": string,
     "price": number,
     "quantity": number,
+    "image": string,
 };
 
 // --------------------
@@ -58,4 +68,4 @@ type User = {
     email: string,
 }
 
-export type { RouteInfo, LayoutArgs, LayoutType, CartItem, User };
+export type { RouteInfo, LayoutArgs, LayoutType, FoodItem, CartItem, User };

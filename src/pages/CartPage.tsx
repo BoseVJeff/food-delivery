@@ -1,4 +1,4 @@
-import { IonButton, IonContent, IonIcon, IonLabel } from "@ionic/react";
+import { IonButton, IonContent, IonIcon, IonLabel, IonSpinner } from "@ionic/react";
 import { useContext, useEffect, useState } from "react";
 import { TitleSetterContext, UserContext } from "../utils/contexts";
 import { add, remove } from "ionicons/icons";
@@ -16,6 +16,7 @@ const HomePage = () => {
       description: "Aloo sabji, 2x roti, rice, daal chawal",
       price: 80,
       quantity: 1,
+      image: "https://ionicframework.com/docs/img/demos/card-media.png",
     },
     {
       id: "1",
@@ -23,6 +24,7 @@ const HomePage = () => {
       description: "Aloo Paratha",
       price: 40,
       quantity: 1,
+      image: "https://ionicframework.com/docs/img/demos/card-media.png",
     },
   ]);
 
@@ -81,6 +83,18 @@ const HomePage = () => {
     );
   };
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const checkout = () => {
+    setIsLoading(true);
+    user.saveCart(cartItem).then(() => {
+      console.dir(user.cart);
+
+      setIsLoading(false);
+    })
+
+  }
+
   return (
     <>
       <IonContent>
@@ -94,8 +108,8 @@ const HomePage = () => {
               {cartItem.map((items) => (
                 <div key={items.id} className="h-[10rem] md:h-[10rem] w-[100%] md:w-[90%] rounded-xl flex gap-2 shadow-sm border-2 border-[#eee] mb-5">
                   <img
-                    src="https://ionicframework.com/docs/img/demos/card-media.png"
-                    alt="silluate of mountains"
+                    src={items.image}
+                    alt={items.name}
                     className=" h-full w-[30%] object-cover rounded-lg scale-90 md:w-[25%]"
                   />
                   <div className="p-2 flex flex-col justify-between w-[28%] md:w-[45%]">
@@ -147,8 +161,9 @@ const HomePage = () => {
                 <p>₹{total}</p>
               </div>
               <div>
-                <IonButton className="w-full h-10" color={"danger"}>
-                  Pay
+                <IonButton className="w-full h-10" color={"danger"} onClick={checkout} disabled={isLoading}>
+                  {isLoading ? <IonSpinner></IonSpinner> :
+                    "Pay"}
                 </IonButton>
               </div>
             </div>
