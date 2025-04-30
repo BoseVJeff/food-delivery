@@ -173,7 +173,7 @@ function App() {
   const [title, setTitle] = useState<string>("Food Delivery");
 
   function setAppTitle(newTitle: string) {
-    document.title = newTitle;
+    document.title = `${newTitle} - GrubGo`;
     setTitle(newTitle);
   }
 

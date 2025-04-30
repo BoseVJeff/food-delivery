@@ -59,7 +59,22 @@ class AuthProvider {
 
     async getCart(): Promise<void> {
         // TODO: Get data from server
-        this.cart = [];
+        this.cart = [
+            {
+                id: "0",
+                name: "Lunch",
+                description: "Aloo sabji, 2x roti, rice, daal chawal",
+                price: 80,
+                quantity: 1,
+            },
+            {
+                id: "1",
+                name: "Aloo Paratha",
+                description: "Aloo Paratha",
+                price: 40,
+                quantity: 1,
+            },
+        ];
         return;
     }
 
