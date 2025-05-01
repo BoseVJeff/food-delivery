@@ -88,10 +88,10 @@ const HomePage = () => {
   const checkout = () => {
     setIsLoading(true);
     user.saveCart(cartItem).then(() => {
-      console.dir(user.cart);
+      // console.dir(user.cart);
 
       setIsLoading(false);
-    })
+    });
 
   }
 
@@ -108,7 +108,7 @@ const HomePage = () => {
               {cartItem.map((items) => (
                 <div key={items.id} className="h-[10rem] md:h-[10rem] w-[100%] md:w-[90%] rounded-xl flex gap-2 shadow-sm border-2 border-[#eee] mb-5">
                   <img
-                    src={items.image}
+                    src={(items.image === "") ? "https://ionicframework.com/docs/img/demos/card-media.png" : items.image}
                     alt={items.name}
                     className=" h-full w-[30%] object-cover rounded-lg scale-90 md:w-[25%]"
                   />
