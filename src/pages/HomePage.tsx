@@ -15,7 +15,7 @@ import { FoodItem } from "../utils/types";
 const HomePage = () => {
   const titleSetter = useContext(TitleSetterContext);
 
-  titleSetter("Home");
+  titleSetter("Menu");
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
