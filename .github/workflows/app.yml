@@ -40,11 +40,11 @@ jobs:
       - name: Set `gradlew` permissions
         run: chmod +x ./android/gradlew
       - name: Build Android APK
-        run: ./gradlew assembleDebug --no-daemon
+        run: ./gradlew assembleRelesse --no-daemon
         working-directory: android
       - name: Upload built APK to GH Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: foodelivery-debug.apk
-          path: ./android/app/build/outputs/apk/debug/app-debug.apk
+          name: foodelivery-release.apk
+          path: ./android/app/build/outputs/apk/release/app-release-unsigned.apk
           overwrite: true
